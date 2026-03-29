@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Instruments</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+    <div class="container">
+        <a class="navbar-brand" href="/">École de Musique</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="/instruments">Instruments</a></li>
+                <li class="nav-item"><a class="nav-link" href="/profs">Professeurs</a></li>
+                <li class="nav-item"><a class="nav-link" href="/cours">Cours</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <h2>Liste des Instruments</h2>
+    <form class="row g-3 mb-4" action="/instruments" method="get">
+        <div class="col-auto">
+            <input type="text" name="famille" class="form-control" placeholder="Famille" th:value="${famille}">
+        </div>
+        <div class="col-auto">
+            <select name="disponibilite" class="form-select">
+                <option value="">-- Disponibilité --</option>
+                <option value="true" th:selected="${disponibilite == true}">Disponible</option>
+                <option value="false" th:selected="${disponibilite == false}">Non Disponible</option>
+            </select>
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-secondary">Filtrer</button>
+            <a href="/instruments" class="btn btn-outline-secondary">Reset</a>
+        </div>
+    </form>
+    
+    <a href="/instruments/new" class="btn btn-success mb-3">Ajouter un Instrument</a>
+    
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nom</th>
+            <th>Famille</th>
+            <th>Disponibilité</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="instrument : ${instruments}">
+            <td th:text="${instrument.id}"></td>
+            <td th:text="${instrument.nom}"></td>
+            <td th:text="${instrument.famille}"></td>
+            <td th:text="${instrument.disponibilite != null and instrument.disponibilite ? 'Oui' : 'Non'}"></td>
+            <td>
+                <a th:href="@{/instruments/edit/{id}(id=${instrument.id})}" class="btn btn-sm btn-primary">Modifier</a>
+                <a th:href="@{/instruments/delete/{id}(id=${instrument.id})}" class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr ?')">Supprimer</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
